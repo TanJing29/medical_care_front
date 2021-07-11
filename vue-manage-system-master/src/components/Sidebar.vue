@@ -113,6 +113,45 @@ export default {
                 index: "/donate",
                 title: "支持作者",
             },
+			{
+			    icon: "el-icon-lx-calendar",
+			    index: "5",
+			    title: "往来管理",
+			    subs: [
+			        {
+			            index: "5-1",
+			            title: "应付账款",
+			            subs: [
+			                {
+			                    index: "/payable",
+			                    title: "应付账款登记",
+			                },
+							{
+							    index: "/payableSta",
+							    title: "应付账款统计",
+							},
+			            ],
+			        },
+					{
+					    index: "5-2",
+					    title: "应收账款",
+					    subs: [
+					        {
+					            index: "/receivable",
+					            title: "应收账款登记",
+					        },
+							{
+							    index: "/receivableSta",
+							    title: "应收账款统计",
+							},
+					    ],
+					},
+					{
+					    index: "/other",
+					    title: "其他收支",
+					},
+			    ],
+			}
         ];
 
         const route = useRoute();

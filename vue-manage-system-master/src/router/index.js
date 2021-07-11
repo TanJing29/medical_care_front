@@ -109,7 +109,44 @@ const routes = [
                     title: '富文本编辑器'
                 },
                 component: () => import (/* webpackChunkName: "editor" */ '../views/Editor.vue')
-            }
+            },{
+				path:'/payable',
+				name:'payable',
+				meta:{
+					title:'应付账款登记'
+				},
+				component:()=> import(/* webpackChunkName:"payable" */'../views/AccountsPayable.vue')
+			},{
+				path:'/payableSta',
+				name:'payableSta',
+				meta:{
+					title:'应付账款统计'
+				},
+				component:()=> import(/* webpackChunkName:"payableSta" */'../views/AccountsPayableStatistics.vue')
+			},
+			{
+				path:'/receivable',
+				name:'receivable',
+				meta:{
+					title:'应收账款登记'
+				},
+				component:()=> import(/* webpackChunkName:"receivable" */'../views/AccountsReceivable.vue')
+			},{
+				path:'/receivableSta',
+				name:'receivableSta',
+				meta:{
+					title:'应收账款统计'
+				},
+				component:()=> import(/* webpackChunkName:"receivableSta" */'../views/AccountsReceivableStatistics.vue')
+			},
+			{
+				path:'/other',
+				name:'other',
+				meta:{
+					title:'其他收支'
+				},
+				component:()=> import(/* webpackChunkName:"other" */'../views/OtherIncome.vue')
+			}
         ]
     }, {
         path: "/login",
