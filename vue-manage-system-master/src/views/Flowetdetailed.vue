@@ -1,0 +1,749 @@
+<template>
+	<el-button type="primary" @click="dialogFormVisible=true">请假申请</el-button>
+	<el-button type="primary" @click="dialogFormVisible2=true">报销申请</el-button>
+	<el-button type="primary" @click="dialogFormVisible4=true">加班申请</el-button>&nbsp;<br><br>
+	<!-- 新增请假申请 -->
+	<el-dialog title="请假申请流程" v-model="dialogFormVisible" :before-close="close">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-select v-model="form.empid" style="margin-right: 171px;">
+					<el-option v-for="items in empData" :key="items.empid" :label="items.empname" :value="items.empid">
+					</el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				结束时间: <el-date-picker v-model="form.jsdata" style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				请假时长: <el-input v-model="form.qjsc" style="width: 450px;"></el-input>
+			</el-form-item>
+			<el-form-item>
+				申请理由: <el-input v-model="form.sqqq" style="width: 450px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close()">关闭</el-button>
+				<el-button type="primary" @click="addFlowet">保 存</el-button>
+			</span>
+		</template>
+	</el-dialog>
+	<!-- 新增报销申请 -->
+	<el-dialog title="报销申请流程" v-model="dialogFormVisible2" :before-close="close">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-select v-model="form.empid" style="margin-right: 171px;">
+					<el-option v-for="items in empData" :key="items.empid" :label="items.empname" :value="items.empid">
+					</el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" style="width: 420px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				报销金额: <el-input v-model="form.bxmoney" style="width: 420px;"></el-input>
+			</el-form-item>
+			<el-form-item style="margin-left: 27px;">
+				备注: <el-input v-model="form.sqqq" style="width: 420px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close()">关闭</el-button>
+				<el-button type="primary" @click="addFlowet1">保 存</el-button>
+			</span>
+		</template>
+	</el-dialog>
+	<!-- 新增加班申请 -->
+	<el-dialog title="加班申请流程" v-model="dialogFormVisible4" :before-close="close">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-select v-model="form.empid" style="margin-right: 171px;">
+					<el-option v-for="items in empData" :key="items.empid" :label="items.empname" :value="items.empid">
+					</el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				结束时间: <el-date-picker v-model="form.jsdata" style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				补偿方式: 调休
+			</el-form-item>
+			<el-form-item>
+				加班原因: <el-input v-model="form.sqqq" style="width: 450px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close()">关闭</el-button>
+				<el-button type="primary" @click="addFlowet2">保 存</el-button>
+			</span>
+		</template>
+	</el-dialog>
+
+	<!-- 显示请假申请 -->
+	<el-dialog title="请假申请流程" v-model="dialogFormVisible1" :before-close="close1">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-input v-model="form.empVo.empname" disabled style="width: 450px;"></el-input>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" disabled style="width: 450px;" type="datetime"
+					placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				结束时间: <el-date-picker v-model="form.jsdata" disabled style="width: 450px;" type="datetime"
+					placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				请假时长: <el-input v-model="form.qjsc" disabled style="width: 450px;"></el-input>
+			</el-form-item>
+			<el-form-item>
+				申请理由: <el-input v-model="form.sqqq" disabled style="width: 450px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close1()">关闭</el-button>
+			</span>
+		</template>
+	</el-dialog>
+
+	<!-- 显示报销申请 -->
+	<el-dialog title="报销申请流程" v-model="dialogFormVisible3" :before-close="close1">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-input v-model="form.empVo.empname" disabled style="width: 420px;"></el-input>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" disabled style="width: 420px;" type="datetime"
+					placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				报销金额: <el-input v-model="form.bxmoney" disabled style="width: 420px;"></el-input>
+			</el-form-item>
+			<el-form-item style="margin-left: 27px;">
+				备注: <el-input v-model="form.sqqq" disabled style="width: 420px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close1()">关闭</el-button>
+			</span>
+		</template>
+	</el-dialog>
+	<!-- 显示加班申请 -->
+	<el-dialog title="加班申请流程" v-model="dialogFormVisible5" :before-close="close1">
+		<el-form :model="form" :rules="rules">
+			<el-form-item style="margin-left: 10px;">
+				申请人: <el-input v-model="form.empVo.empname" disabled style="width: 420px;"></el-input>
+			</el-form-item>
+			<el-form-item>
+				开始时间: <el-date-picker v-model="form.kstime" disabled style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				结束时间: <el-date-picker v-model="form.jsdata" disabled style="width: 450px;" type="datetime" placeholder="选择日期时间">
+				</el-date-picker>
+			</el-form-item>
+			<el-form-item>
+				加班原因: <el-input v-model="form.sqqq" disabled style="width: 450px;"></el-input>
+			</el-form-item>
+		</el-form>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="close1()">关闭</el-button>
+			</span>
+		</template>
+	</el-dialog>
+
+
+
+
+	<el-tabs v-model="activeName" @tab-click="handleClick">
+		<el-tab-pane label="全部" name="first">
+			<el-table :data="flowData" border style="width: 100%" @selection-change="handleSelectionChange"
+				ref="multipleTable">
+				<el-table-column type="selection" width="55">
+				</el-table-column>
+				<el-table-column prop="fid" label="编号" width="50" align="center">
+				</el-table-column>
+				<el-table-column prop="flowname" label="流程名称" width="160" align="center">
+					<template #default="scope">
+						<a style="color: #2D8CF0;" @click="showEdit(scope.row)">
+							{{scope.row.flowname}}
+						</a>
+					</template>
+				</el-table-column>
+				<el-table-column prop="empVo.empname" label="申请人" width="160" align="center">
+				</el-table-column>
+				<el-table-column prop="empVo.zhiweiVo.zwname" label="当前节点" width="180" align="center">
+				</el-table-column>
+				<el-table-column prop="initiatetime" label="发起时间" width="200" align="center">
+				</el-table-column>
+				<el-table-column prop="status" label="审核结果" width="160" align="center">
+					<template v-slot="slot">
+						<p v-if="slot.row.status==0" style="color: #20A0FF;">审批中</p>
+						<p v-if="slot.row.status==1" style="color: #00A854;">审批通过</p>
+						<p v-if="slot.row.status==2">审批不通过</p>
+						<p v-if="slot.row.status==3" style="color: #777777;">撤销</p>
+					</template>
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" align="center">
+					<template #default="scope">
+						<el-button type="text" size="small" @click="updstatus(scope.row)">
+							通过
+						</el-button>
+						<el-button type="text" size="small" @click="updstatus1(scope.row)">
+							驳回
+						</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<!-- 分页 -->
+			<div class="block" style="display: flex;justify-content: center;margin-top: 10px;">
+				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+					:current-page="pageInfo.currentPage" :page-sizes="[2, 4, 6, 8]" :page-size="pageInfo.pagesize"
+					layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total">
+				</el-pagination>
+			</div>
+		</el-tab-pane>
+
+
+		<el-tab-pane label="待审批" name="second">
+			<el-table :data="flow1Data" border style="width: 100%" @selection-change="handleSelectionChange"
+				ref="multipleTable">
+				<el-table-column type="selection" width="55">
+				</el-table-column>
+				<el-table-column prop="fid" label="编号" width="50" align="center">
+				</el-table-column>
+				<el-table-column prop="flowname" label="流程名称" width="160" align="center">
+					<template #default="scope">
+						<a style="color: #2D8CF0;" @click="showEdit(scope.row)">
+							{{scope.row.flowname}}
+						</a>
+					</template>
+				</el-table-column>
+				<el-table-column prop="empVo.empname" label="申请人" width="160" align="center">
+				</el-table-column>
+				<el-table-column prop="empVo.zhiweiVo.zwname" label="当前节点" width="180" align="center">
+				</el-table-column>
+				<el-table-column prop="initiatetime" label="发起时间" width="200" align="center">
+				</el-table-column>
+				<el-table-column prop="status" label="审核结果" width="160" align="center">
+					<template v-slot="slot">
+						<p v-if="slot.row.status==0" style="color: #20A0FF;">审批中</p>
+						<p v-if="slot.row.status==1" style="color: #00A854;">审批通过</p>
+						<p v-if="slot.row.status==2">审批不通过</p>
+						<p v-if="slot.row.status==3" style="color: #777777;">撤销</p>
+					</template>
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" align="center">
+					<template #default="scope">
+						<el-button type="text" size="small" @click="updstatus(scope.row)">
+							通过
+						</el-button>
+						<el-button type="text" size="small" @click="updstatus1(scope.row)">
+							驳回
+						</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+		</el-tab-pane>
+
+
+		<el-tab-pane label="已审批 " name="third">
+			<el-table :data="flow2Data" border style="width: 100%" @selection-change="handleSelectionChange"
+				ref="multipleTable">
+				<el-table-column type="selection" width="55">
+				</el-table-column>
+				<el-table-column prop="fid" label="编号" width="50" align="center">
+				</el-table-column>
+				<el-table-column prop="flowname" label="流程名称" width="160" align="center">
+					<template #default="scope">
+						<a style="color: #2D8CF0;" @click="showEdit(scope.row)">
+							{{scope.row.flowname}}
+						</a>
+					</template>
+				</el-table-column>
+				<el-table-column prop="empVo.empname" label="申请人" width="160" align="center">
+				</el-table-column>
+				<el-table-column prop="empVo.zhiweiVo.zwname" label="当前节点" width="180" align="center">
+				</el-table-column>
+				<el-table-column prop="initiatetime" label="发起时间" width="200" align="center">
+				</el-table-column>
+				<el-table-column prop="status" label="审核结果" width="160" align="center">
+					<template v-slot="slot">
+						<p v-if="slot.row.status==0" style="color: #20A0FF;">审批中</p>
+						<p v-if="slot.row.status==1" style="color: #00A854;">审批通过</p>
+						<p v-if="slot.row.status==2">审批不通过</p>
+						<p v-if="slot.row.status==3" style="color: #777777;">撤销</p>
+					</template>
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" align="center">
+					<template #default="scope">
+						<el-button type="text" size="small" @click="updstatus(scope.row)">
+							通过
+						</el-button>
+						<el-button type="text" size="small" @click="updstatus1(scope.row)">
+							驳回
+						</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+
+		</el-tab-pane>
+	</el-tabs>
+
+</template>
+
+<script>
+	import qs from 'qs'
+	export default {
+		data() {
+			return {
+				shortcuts: [{
+					text: '今天',
+					value: new Date(),
+				}, {
+					text: '昨天',
+					value: (() => {
+						const date = new Date();
+						date.setTime(date.getTime() - 3600 * 1000 * 24);
+						return date
+					})(),
+				}, {
+					text: '一周前',
+					value: (() => {
+						const date = new Date();
+						date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+						return date
+					})(),
+				}],
+				value1: '',
+				value2: '',
+				defaultTime: new Date(2000, 1, 1, 12, 0, 0),
+				activeName: 'second',
+				rules: {
+					sourceName: [{
+						required: true,
+						message: "请输入用户名",
+						trigger: "blur"
+					}]
+				},
+				deld() {
+					ElMessage({
+						showClose: true,
+						message: '请选择删除内容!',
+						type: 'error'
+					});
+				},
+				dels() {
+					ElMessage({
+						showClose: true,
+						message: '删除成功!',
+						type: 'success'
+					});
+				},
+				pageInfo: {
+					currentPage: 1, //当前页数，由用户指定
+					pagesize: 5, //每页显示的条数
+					total: 0, //总记录条数，数据库查出来的
+					suppliername: ""
+				},
+				dialogFormVisible: false,
+				dialogFormVisible1: false,
+				dialogFormVisible2: false,
+				dialogFormVisible3: false,
+				dialogFormVisible4: false,
+				dialogFormVisible5: false,
+				form: {
+					empVo: {},
+					zhiweiVo: {},
+					liaisonman: "",
+					suppliername: "",
+					suppId: '',
+					supplierId: "",
+					address: "",
+					suphone: "",
+					remarks: "",
+					updatename: "",
+					deletename: "",
+					kstime: "",
+					jsdata: "",
+					flowname: ""
+				},
+				procData: [{
+					proName: "", //请假申请
+					ksDate: "", //申请时间
+					reason: "" //原因
+				}],
+				flowData: [],
+				flow1Data: [],
+				flow2Data: [],
+				empData: [],
+				zhiweiData: [],
+			};
+		},
+		methods: {
+			//全选复选框
+			SAll() {
+				this.$refs.multipleTable.toggleAllSelection();
+			},
+			//取消选中的复选框
+			NSel() {
+				this.$refs.multipleTable.clearSelection();
+			},
+			//批量删除按钮
+			pldele() {
+				console.log(this.multipleSelection.length)
+				if (this.multipleSelection.length === 0) {
+					this.deld();
+				} else {
+					this.multipleSelection.forEach(item => {
+						this.delete1(item)
+					});
+					this.dels();
+				}
+			},
+			//总复选框的全选和取消全选
+			handleSelectionChange(val) {
+				this.multipleSelection = val;
+			},
+			//模糊查询
+			selall() {
+				const _this = this
+				this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+						params: this.pageInfo
+					})
+					.then(function(response) {
+						_this.flowData = response.data.list
+						_this.pageInfo.total = response.data.total
+						console.log(response)
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			//修改通过
+			updstatus(row) {
+				const _this = this
+				this.$confirm('此操作将对该数据进行审核, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					row.status = 1
+					this.axios.put("http://localhost:8089/m1/updstatus", row)
+						.then(function(response) { // eslint-disable-line no-unused-vars
+							_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+									params: _this.pageInfo
+								})
+								.then(function(response) {
+									_this.flowData = response.data.list
+									_this.pageInfo.total = response.data.total
+								}).catch(function(error) {
+									console.log(error)
+								})
+						})
+				}).catch(() => {
+					this.$message({
+						type: 'error',
+						message: '取消审核!'
+					});
+				});
+			},
+			//修改驳回
+			updstatus1(row) {
+				const _this = this
+				this.$confirm('此操作将对该数据进行驳回, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					row.status = 3
+					this.axios.put("http://localhost:8089/m1/updstatus1", row)
+						.then(function(response) { // eslint-disable-line no-unused-vars
+							_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+									params: _this.pageInfo
+								})
+								.then(function(response) {
+									_this.flowData = response.data.list
+									_this.pageInfo.total = response.data.total
+								}).catch(function(error) {
+									console.log(error)
+								})
+						})
+				}).catch(() => {
+					this.$message({
+						type: 'error',
+						message: '取消驳回!'
+					});
+				});
+			},
+			showEdit(row) { //自动获取值并填入到form表单中
+				if (row.flowname === "请假申请") {
+					this.form.fid = row.fid
+					this.form.flowname = row.flowname
+					this.form.sqqq = row.sqqq
+					this.form.qjsc = row.qjsc
+					this.form.remarks = row.remarks
+					this.form.kstime = row.kstime
+					this.form.jsdata = row.jsdata
+					this.form.empVo.empname = row.empVo.empname
+					this.form.bxmoney = row.bxmoney
+					this.dialogFormVisible1 = true
+				} else if (row.flowname === "加班申请") {
+					this.form.fid = row.fid
+					this.form.flowname = row.flowname
+					this.form.sqqq = row.sqqq
+					this.form.qjsc = row.qjsc
+					this.form.remarks = row.remarks
+					this.form.kstime = row.kstime
+					this.form.jsdata = row.jsdata
+					this.form.empVo.empname = row.empVo.empname
+					this.form.bxmoney = row.bxmoney
+					this.dialogFormVisible5 = true
+				} else {
+					this.form.fid = row.fid
+					this.form.flowname = row.flowname
+					this.form.sqqq = row.sqqq
+					this.form.qjsc = row.qjsc
+					this.form.remarks = row.remarks
+					this.form.kstime = row.kstime
+					this.form.jsdata = row.jsdata
+					this.form.empVo.empname = row.empVo.empname
+					this.form.bxmoney = row.bxmoney
+					this.dialogFormVisible3 = true
+				}
+			},
+			//批量删除
+			delete1(row) {
+				const _this = this
+				this.form.deletename = "lxx"
+				this.axios.put("http://localhost:8089/m1/delSupplier", row, {
+						headers: {
+							'content-type': 'application/json',
+							'jwtAuth': _this.$store.getters.token
+						}
+					})
+					.then(function(response) { // eslint-disable-line no-unused-vars
+						_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+								params: _this.pageInfo
+							})
+							.then(function(response) {
+								_this.flowData = response.data.list
+								_this.pageInfo.total = response.data.total
+							}).catch(function(error) {
+								console.log(error)
+							})
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			//单个删除
+			delSupplier(row) {
+				const _this = this
+				var flag = true // eslint-disable-line no-unused-vars
+				this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					console.log(row);
+					_this.form.deletename = "lxx"
+					_this.axios.put("http://localhost:8089/m1/delSupplier", row)
+						.then(function(response) {
+							console.log(response)
+							var rows = _this.flowData
+								.filter(d => d.sourceId != row.sourceId)
+							_this.flowData = rows
+							_this.pageInfo.total = _this.pageInfo.total - 1
+						}).catch(function(error) {
+							console.log(error)
+						})
+				}).catch(() => {
+					this.$message({
+						type: 'error',
+						message: '取消删除!'
+					});
+				});
+			},
+			//新增请假申请
+			addFlowet() {
+				const _this = this
+				this.form.addname = "lxx"
+				this.form.flowname = "请假申请"
+				this.axios.post("http://localhost:8089/m1/addFlowet", this.form)
+					.then(function(response) { // eslint-disable-line no-unused-vars
+						_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+								params: _this.pageInfo
+							})
+							.then(function(response) {
+								_this.flowData = response.data.list
+								_this.pageInfo.total = response.data.total
+							}).catch(function(error) {
+								console.log(error)
+							})
+						_this.dialogFormVisible = false
+						for (var key in _this.form) {
+							delete _this.form[key];
+						}
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			//新增报销申请
+			addFlowet1() {
+				const _this = this
+				this.form.addname = "lxx"
+				this.form.flowname = "报销申请"
+				this.axios.post("http://localhost:8089/m1/addFlowet", this.form)
+					.then(function(response) { // eslint-disable-line no-unused-vars
+						_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+								params: _this.pageInfo
+							})
+							.then(function(response) {
+								_this.flowData = response.data.list
+								_this.pageInfo.total = response.data.total
+							}).catch(function(error) {
+								console.log(error)
+							})
+						_this.dialogFormVisible2 = false
+						for (var key in _this.form) {
+							delete _this.form[key];
+						}
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			//新增加班申请
+			addFlowet2() {
+				const _this = this
+				this.form.addname = "lxx"
+				this.form.flowname = "加班申请"
+				this.axios.post("http://localhost:8089/m1/addFlowet", this.form)
+					.then(function(response) { // eslint-disable-line no-unused-vars
+						_this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+								params: _this.pageInfo
+							})
+							.then(function(response) {
+								_this.flowData = response.data.list
+								_this.pageInfo.total = response.data.total
+							}).catch(function(error) {
+								console.log(error)
+							})
+						_this.dialogFormVisible4 = false
+						for (var key in _this.form) {
+							delete _this.form[key];
+						}
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			close1() {
+				this.dialogFormVisible3 = false
+				this.dialogFormVisible1 = false
+				this.dialogFormVisible5 = false
+			},
+			close() {
+				this.dialogFormVisible = false
+				this.dialogFormVisible2 = false
+				this.dialogFormVisible4 = false
+				this.$message({
+					type: 'info',
+					message: '已取消操作'
+				});
+			},
+			handleSizeChange(pagesize) {
+				var _this = this
+				this.pageInfo.pagesize = pagesize
+				var ps = qs.stringify(this.pageInfo) // eslint-disable-line no-unused-vars
+				this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+						params: this.pageInfo
+					})
+					.then(function(response) {
+						console.log(response.data)
+						_this.flowData = response.data.list
+						_this.pageInfo.total = response.data.total
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			handleCurrentChange(currentPage) {
+				var _this = this
+				this.pageInfo.currentPage = currentPage
+				var ps = qs.stringify(this.pageInfo) // eslint-disable-line no-unused-vars
+				this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+						params: this.pageInfo
+					})
+					.then(function(response) {
+						_this.flowData = response.data.list
+						_this.pageInfo.total = response.data.total
+					}).catch(function(error) {
+						console.log(error)
+					})
+			},
+			handleClick(tab, event) {
+				console.log(tab, event);
+			}
+		},
+		created() {
+			const _this = this
+			this.axios.get("http://localhost:8089/m1/selAllFlowet", {
+					params: this.pageInfo
+				})
+				.then(function(response) {
+					_this.flowData = response.data.list
+					_this.pageInfo.total = response.data.total
+					console.log(response)
+				}).catch(function(error) {
+					console.log(error)
+				})
+			this.axios.get("http://localhost:8089/m1/selstatus")
+				.then(function(response) {
+					_this.flow1Data = response.data
+					console.log(response)
+				}).catch(function(error) {
+					console.log(error)
+				})
+			this.axios.get("http://localhost:8089/m1/selstatus1")
+				.then(function(response) {
+					_this.flow2Data = response.data
+					console.log(response)
+				}).catch(function(error) {
+					console.log(error)
+				})
+			this.axios.get("http://localhost:8089/m1/selEmp")
+				.then(function(response) {
+					_this.empData = response.data
+					console.log(response)
+				}).catch(function(error) {
+					console.log(error)
+				})
+			this.axios.get("http://localhost:8089/m1/selZhiwei")
+				.then(function(response) {
+					_this.zhiweiData = response.data
+					console.log(response)
+				}).catch(function(error) {
+					console.log(error)
+				})
+		}
+	};
+</script>
+
+<style>
+</style>
