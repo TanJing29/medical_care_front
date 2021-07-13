@@ -132,23 +132,6 @@
 					title: "支持作者",
 				},
 			];
-
-			const route = useRoute();
-
-			const onRoutes = computed(() => {
-				return route.path;
-			});
-
-			const store = useStore();
-			const collapse = computed(() => store.state.collapse);
-
-			return {
-				items,
-				onRoutes,
-				collapse,
-			};
-		},
-	};
 </script>
 
 <style scoped>
