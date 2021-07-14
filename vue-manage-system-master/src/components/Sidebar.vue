@@ -68,6 +68,9 @@
 					}, {
 						index: "/flow",
 						title: "流程审批",
+					}, {
+						index: "/flowet",
+						title: "上级审批",
 					}]
 				},
 				{

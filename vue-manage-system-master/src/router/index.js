@@ -124,6 +124,13 @@ const routes = [{
 		},
 		component: () => import( /* webpackChunkName: "user" */ '../views/Flowetdetailed.vue')
 	}, {
+		path: '/flowet',
+		name: 'flowet',
+		meta: {
+			title: '上级审批'
+		},
+		component: () => import( /* webpackChunkName: "user" */ '../views/Flowet.vue')
+	}, {
 		path: '/editor',
 		name: 'editor',
 		meta: {
